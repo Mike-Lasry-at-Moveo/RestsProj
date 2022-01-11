@@ -1,0 +1,43 @@
+.signupPage {
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+}
+
+.signupControls{
+    color: wheat;
+    background-color: rgb(14, 108, 216);
+    margin: 25px;
+    padding: 10px;
+
+    border: 3px solid rgb(165, 107, 0);
+    border-radius: 25px;
+}
+
+.credentialsInput {
+    color: wheat;
+    background-color: rgb(14, 108, 216);
+    border-radius: 25px;
+    border-color: wheat;
+    margin:3px;
+    text-align: center;
+}
+
+.signupControl{
+    padding: 5px;
+}
+
+form{
+    width: 25%;
+}
+
+.signupBtn{
+    width: 100%;
+    color: #fff;
+    font-weight: bolder;
+    height: 50px;
+    border-radius: 10px;
+    border:1px solid white;
+    background-color: rgb(0, 0, 255);
+    box-shadow: 0px 0px 1px 2px black;  
+}

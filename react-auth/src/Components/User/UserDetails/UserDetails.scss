@@ -1,0 +1,32 @@
+.userDetails {
+    margin: 15px;
+
+    a {
+        text-decoration: none;
+    }
+
+    a:hover {
+        color: #00a0c6;
+        text-decoration: none;
+        cursor: pointer;
+    }
+}
+
+.userInformation {
+    color: white;
+}
+
+.updateForm {
+    display: flex;
+    justify-content: center;
+}
+
+.updateBtn {
+    color: darkblue;
+    font-weight: bolder;
+    width: 150px;
+    height: 50px;
+    border-radius: 25px;
+    border-color: rgb(165, 107, 0);
+    background-color: rgb(141, 194, 255);
+}

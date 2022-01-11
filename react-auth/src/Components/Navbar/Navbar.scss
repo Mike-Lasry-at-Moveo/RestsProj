@@ -1,0 +1,80 @@
+@mixin squared($vh) {
+    width: $vh;
+    height: $vh;
+}
+
+.navbar{
+    background-color: rgb(60, 144, 240);
+    display: flex;
+    justify-content: space-around;
+    vertical-align: middle;
+    height:100px;
+    min-width: 400px;
+
+    .navBtn{
+        cursor: pointer;
+        position: relative;
+        top:20%;    
+        color: #fff;
+        font-weight: bolder;
+        height: 50px;
+        border-radius: 10px;
+        border:1px solid white;
+        box-shadow: 0px 0px 1px 2px black;
+        width:auto;
+        
+        @media (min-width: 870px) {
+            width:150px;
+        }
+        
+        @media (min-width: 1500px)  {
+            width:350px;
+        }
+    }
+
+    .adminBtn {
+        color: red;
+        background-color: black;
+    }
+
+    .profileBtn {
+        color: white;
+        background-color: blue;
+    }
+
+    .loginBtn {
+        background-color: green;
+    }
+
+    .signupBtn {
+        background-color: darkblue;
+    }
+
+    .navBtn:hover {
+        box-shadow: 0px 0px 20px 5px rgb(170, 87, 230);
+        color: wheat;
+        border-color: wheat;
+        background-color: indigo;
+    }
+
+    a {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .logoutBtn{
+        background-color: red;
+    }
+    .logoutBtn:hover {
+        color:black;
+        background-color: salmon;
+
+    }
+}
+
+.homeBtn {
+    position: relative;
+    top:35%;
+    @include squared(30px);
+    cursor: pointer;
+}

@@ -1,0 +1,22 @@
+.adminMenu {
+    background-color: rgb(51, 48, 48);
+    border: 5px solid red;
+    margin:2%;
+    border-radius: 15px;
+}
+
+h1 {
+    color: rgb(44, 169, 241);
+}
+
+.adminControls {
+    color:darkblue;
+    background-color: salmon;
+    border-radius: 25px;
+    border: 2px solid indigo;
+}
+
+.adminControls:hover{
+    cursor:pointer;
+    text-decoration: underline;
+}

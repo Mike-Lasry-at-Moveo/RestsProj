@@ -1,0 +1,36 @@
+.userList{
+    margin:20px;
+    display: flex;
+    flex-direction: row;
+    flex-direction: column;
+    align-items: center;
+    overflow: scroll;
+}
+
+.userCard {
+    display: flex;
+    justify-content: space-between;
+    color: wheat;
+    border: 3px solid orange;
+    background-color: teal;
+    border-radius: 20px;
+    width: 50%;
+    margin: 4px;
+}
+
+.deleteUserBtn{
+    color: white;
+    background-color: red;
+    border: 3px solid black;
+    border-radius: 25px;
+}
+
+.updateUserBtn{
+    color: white !important; // not working
+    background-color: rgb(182, 103, 238);
+    border: 3px solid black;
+    border-radius: 25px;
+}
+Link{
+    text-decoration: none;
+}

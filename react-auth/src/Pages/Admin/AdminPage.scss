@@ -1,0 +1,34 @@
+.adminPage{
+    display: flex;
+    flex-direction: row;
+    height: 85vh;
+
+    .adminContent{
+        width: 80%;
+    }
+
+    .adminControl{
+        width: 20%;        
+    }
+
+    .adminMenu {
+        display: flex;
+        flex-direction: column;
+        height:100%;
+    }
+
+    a {
+        color: wheat;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration:underline; 
+        cursor:pointer;  
+    }
+
+    .deleteUserBtn:hover{
+        text-decoration:underline; 
+        cursor:pointer;  
+    }
+}
