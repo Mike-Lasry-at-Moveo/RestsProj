@@ -6,6 +6,7 @@ import IUpdateUser from "Interfaces/Update";
 import securityService from "./security";
 
 const getAllUsers = (token: string) => {
+    
     token = securityService.encryptString(token);
     const config = { headers: { [Str.AUTH]: `${Str.BEARER}${Str.COLON}${Str.SPACE}${token}` } }; 
     return axios.get(`${Path.BASE_URL}/${Path.USERS_SFX}`, config);
@@ -25,8 +26,8 @@ const login = (payload: IAuth) => {
     return axios.post(`${`${Path.BASE_URL}/${Path.USERS_SFX}`}/${Path.LOGIN_SFX}`, {data: encPayload});
 }
 
-const changeUser = (id: string, update: IUpdateUser) => {
-    return axios.patch(`${`${Path.BASE_URL}/${Path.USERS_SFX}`}/${id}`, update);
+const changeUser = (id: string, payload: any) => {
+    return axios.patch(`${`${Path.BASE_URL}/${Path.USERS_SFX}`}/${id}`, payload);
 }
 
 const deleteUser = (id: string) => {

@@ -142,6 +142,7 @@ enum ClassName {
     USR_DETS = 'userDetails',
     USR_INFO = 'userInformation',
 
+    UPDT_VAL = 'updateValue',
     UPDT_USR = 'updateUserBtn',
     DEL_USR = 'deleteUserBtn',
 

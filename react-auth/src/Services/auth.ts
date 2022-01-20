@@ -15,6 +15,8 @@ const setToken = (token: string) => {
 
 const getToken = (): string => {
     let token: string = Str.EMPTY;
+    // console.log(`getting token: `, document.cookie);
+    
     let cookies: string[] = document.cookie.split(Str.SEMI_COLON);
     cookies.forEach( cookie => {
         let kv_pair = cookie.split(Str.EQUALS);
@@ -25,9 +27,18 @@ const getToken = (): string => {
 }
 
 const isUserLogged = () => {
-    return getToken() != Str.EMPTY;
+    let res = isExist(getToken());
+    // console.log(`is user logged: `, res);
+    return  res;
 }
 
+const isExist = (data: any) => {
+    if(!data) return false;
+    return data != Str.EMPTY &&
+            data != Str.SPACE &&
+             data != 'undefined' &&
+              data != null; 
+}
 const isUserAdmin = () => {
     const u = getUser();
     return u != Str.EMPTY && u.role == Role.ADMIN;
@@ -40,6 +51,8 @@ const getUser = () => {
 const parseToken = (ix: number) => {
     const token = getToken();    
     if(token == Str.EMPTY) return Str.EMPTY;
+    // console.log(`parsing user token`, token);
+    
     const userPayload = token.split(Str.DOT)[ix];
     const parsedUser = window.atob(userPayload); 
     return JSON.parse(parsedUser);
