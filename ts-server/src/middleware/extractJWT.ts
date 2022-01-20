@@ -7,6 +7,7 @@ const NAMESPACE = "Auth";
 const extractJWT = (req: Request, res: Response, next: NextFunction) => {
     let token = req.headers.authorization?.split(" ")[1];
     token = securityService.decryptString(token!);
+    console.log(`parsed token, extracting: `,token);
     if (token) {
         jwt.verify(token, config.SERVER.token.secret, (err, decoded) => {            
             if (err) {

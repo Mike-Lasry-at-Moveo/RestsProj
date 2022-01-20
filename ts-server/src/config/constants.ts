@@ -9,6 +9,8 @@ enum Options {
     DISHES = 'dishes',
     OPEN = 'open',
     DESC = 'description',
+    PRICE = 'price',
+    
 }
 
 enum Errors {
@@ -17,6 +19,7 @@ enum Errors {
     REST_DEL = 'Error occured trying to delete restaurant',
     REST_UPDT = 'Error occured trying to change a restaurant',
     REST_CREATE = 'Error occured trying to add a new restaurant',
+    MEAL_CREATE = 'Error occured trying to add a new meal',
 }
 
 export {

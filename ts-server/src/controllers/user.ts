@@ -6,7 +6,6 @@ import { usersService } from "../services/user";
 
 const getAllUsers = async (req: Request, res: Response) => {
     const users = await usersService.getUsers();
-    // res.status(201).send({success:true, data:users});
     res.status(201).send(newResponse(users));
 };
 
@@ -16,16 +15,17 @@ const getUserById = async (req: Request, res: Response) => {
     res.status(201).send(newResponse(user));
 };
 
-const createUser = async (firstName: string,lastName: string,username: string,email: string,address: string, password: string) => {
+const createUser = async (firstName: string,lastName: string,username: string,email: string,address: string, password: string): Promise<boolean> => {
     const user = await usersService.createUser({ firstName,lastName,username,email,address }, password);
-    return user != null && user != undefined;
+    return isExist(user);
 };
 
 const updateUser = async (req: Request, res: Response) => {
     const id = req.params.id;
-    const {key, value} = req.body;
-    const User = await usersService.updateUser(id, key, value);
-    res.status(201).send(User);
+    const {key, value} = securityService.decryptJson(req.body.data);
+    const user = await usersService.updateUser(id, key, value);
+    const outPayload = isExist(user) ? newResponse(user) : newResponse(null,"Failed to update user.");
+    res.status(201).send(outPayload);
 };
 
 const deleteUser = async (req: Request, res: Response) => {
@@ -38,10 +38,10 @@ const login = async (req: Request, res: Response) => {
     const { username, password } = securityService.decryptJson(req.body.data);
     const users = await User.getByUsername(username);
     if(!isExist(users) || users.length == 0)
-        return res.status(404).json({success: false, message: "can't find users:", data: users});
+        return res.status(404).send(newResponse(null,"Can't find users."));
     
     const providedHash = securityService.hashPassword(password, users[0].salt);
-    let authenticated: boolean = users[0].hash == providedHash;
+    let authenticated: boolean = users[0].hash === providedHash;
 
     if(authenticated){
         signJWT(users[0], (err,token) => {
@@ -59,22 +59,22 @@ const signup = async (req: Request, res: Response) => {
 
     const user = { firstName,lastName,username,email,address,password };
     const usersTaken = await usersService.getUserByUsername(user.username);
-    if(usersTaken.length != 0) return res.status(401).send(newResponse(null,"Username already in use"));
+    if(usersTaken.length != 0) return res.status(409).send(newResponse(null,"Username already in use"));
     
     const success = await createUser(firstName,lastName,username,email,address,password);
     const outPayload = success ? newResponse(user) : newResponse(null,'Failed to create user.');
-    res.status(success ? 200 : 402).send(outPayload);
+    res.status(success ? 200 : 500).send(outPayload);
 }
-
 
 // Util functions
 
 const newResponse = (data: any, msg?:string, encString:boolean = false) => {
-    if(isExist(data)) data = encString ? 
-            securityService.encryptString(data) : 
-                securityService.encryptJson(data);
+    const success = isExist(data);
+    if(success) data = encString ? 
+        securityService.encryptString(data) : 
+            securityService.encryptJson(data);
     return {
-        success: isExist(data),
+        success: success,
         data: data,
         message: msg || ''
     };

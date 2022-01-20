@@ -35,7 +35,8 @@ export default function Navbar(){
     }
 
     const NavContent = () => {
-        return authService.isUserLogged() ? <div><h3>Welcome, {authService.getUser().username}</h3></div> : <div><h3>Welcome </h3></div>
+        let res:boolean = authService.isUserLogged();
+        return res ? <div><h3>Welcome, {authService.getUser().username}</h3></div> : <div><h3>Welcome </h3></div>
     }
     
     return (

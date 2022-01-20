@@ -12,12 +12,14 @@ import { ClassName, Path } from 'Interfaces/Enums';
 import ProfilePage from 'Pages/Profile/ProfilePage';
 import AccessDenied from 'Components/Admin/AccessDenied/AccessDenied';
 import RestaurantDetails from 'Components/Restaurant/RestaurantDetails/RestaurantDetails';
+import authService from 'Services/auth';
 
 export default function App() {
   return (
     <div className={ClassName.APP}>
       { <BrowserRouter >
         <Navbar />
+        {authService.logout()}
         <Routes>
             <Route path={`/${Path.HOME_SFX}`} element={<HomePage/>}/>
             <Route path={`/${Path.LOGIN_SFX}`} element={<LoginPage/>}/>

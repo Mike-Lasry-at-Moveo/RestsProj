@@ -11,6 +11,7 @@ import IResponse from "Interfaces/Response";
 import securityService from "Services/security";
 
 export default function UserDetails() {
+
     const newUser = (): IUser => {
         return {
             _id: Str.EMPTY,
@@ -51,9 +52,11 @@ export default function UserDetails() {
 
     const updateUser = async (e: any) => {
         e.preventDefault();
-        const responseWrapper = await usersService.changeUser(user._id as string, update);
-        const response = responseWrapper.data as IResponse;
-        if (response.acknowledged && response.modifiedCount) {
+        const payload = securityService.encryptJson(update);
+        const responseWrapper = await usersService.changeUser(user._id as string, {data: payload});
+
+        const response = responseWrapper.data;
+        if (response.success) {
             setUser((prevState) => { return { ...getUserUpdated() } });
             resetFields();
         }
@@ -78,19 +81,17 @@ export default function UserDetails() {
     }
 
     const { id } = useParams();
-
     const [user, setUser] = useState(newUser() as IUser);
     const [update, setUpdate] = useState(newUpdate() as IUpdateUser)
 
     useEffect(() => {
-        const fetchUsers = async () => {
+        const fetchUser = async () => {
             let response: any = null;
             const responseWrapper = await usersService.getUserById(id!);
             if(responseWrapper != null) response = responseWrapper.data;
             if (response && response.success) setUser((ps) => securityService.decryptJson(response.data));
-
             else return alert(Errors.AXIOS);
-        }; fetchUsers();
+        }; fetchUser();
     }, []);
 
     return (
@@ -122,7 +123,8 @@ export default function UserDetails() {
                         </div>
                         <div className={ClassName.UPDT_CNTRL}>
                             <label>Choose the new value</label><br /><br />
-                            <input onChange={(e) => pickUpdateValue(e)} value={update.value} type={InputTypes.TXT} />
+                            <input onChange={(e) => pickUpdateValue(e)} className={ClassName.UPDT_VAL}
+                                value={update.value} type={InputTypes.TXT} />
                         </div>
                     </div>
                     <div className={ClassName.UPDT_ACTNS}>
