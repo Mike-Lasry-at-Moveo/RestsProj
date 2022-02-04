@@ -4,6 +4,8 @@ import { IUser, User } from "../models/user";
 import { securityService } from "../services/security";
 import { usersService } from "../services/user";
 
+const UNAUTH_MSG = 'Username or password are incorrect!';
+
 const getAllUsers = async (req: Request, res: Response) => {
     const users = await usersService.getUsers();
     res.status(201).send(newResponse(users));
@@ -38,19 +40,19 @@ const login = async (req: Request, res: Response) => {
     const { username, password } = securityService.decryptJson(req.body.data);
     const users = await User.getByUsername(username);
     if(!isExist(users) || users.length == 0)
-        return res.status(404).send(newResponse(null,"Can't find users."));
+        return res.status(200).send(newResponse(null,UNAUTH_MSG));
     
     const providedHash = securityService.hashPassword(password, users[0].salt);
     let authenticated: boolean = users[0].hash === providedHash;
 
     if(authenticated){
         signJWT(users[0], (err,token) => {
-            let status = err ? 500 : 200;
             let success = err ? false : true;
-            let message = success ? token : null;
-            res.status(status).json({success:success, message: message});
+            let outPayload = success ? newResponse(token, '', true) : newResponse(null, UNAUTH_MSG);
+            // let outPayload = success ? ({success,data:token}) : newResponse(null, UNAUTH_MSG);
+            res.status(200).send(outPayload);
         });
-    } else res.status(500).json({success: false, message:"Can't sign token", data: null});
+    } else res.status(200).send(newResponse(null, UNAUTH_MSG));
 }
 
 const signup = async (req: Request, res: Response) => {
@@ -59,11 +61,13 @@ const signup = async (req: Request, res: Response) => {
 
     const user = { firstName,lastName,username,email,address,password };
     const usersTaken = await usersService.getUserByUsername(user.username);
-    if(usersTaken.length != 0) return res.status(409).send(newResponse(null,"Username already in use"));
+    if(usersTaken.length != 0) return res.status(200).send(newResponse(null,"Username already in use"));
     
     const success = await createUser(firstName,lastName,username,email,address,password);
-    const outPayload = success ? newResponse(user) : newResponse(null,'Failed to create user.');
-    res.status(success ? 200 : 500).send(outPayload);
+    if(success) return login(req,res);
+    
+    // const outPayload = success ? newResponse(user) : newResponse(null,'Failed to create user.');
+    // res.status(200).send(outPayload);
 }
 
 // Util functions
@@ -73,6 +77,7 @@ const newResponse = (data: any, msg?:string, encString:boolean = false) => {
     if(success) data = encString ? 
         securityService.encryptString(data) : 
             securityService.encryptJson(data);
+
     return {
         success: success,
         data: data,
@@ -92,4 +97,5 @@ const usersController = {
     getUserById,
     login,
     signup
-}; export { usersController };
+}
+export { usersController };
